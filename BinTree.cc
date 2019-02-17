@@ -48,7 +48,7 @@ class BinTree {
   //}BinarySearchTree(BinarySearchTree&& bst) noexcept : root{std::move(bst.root)} {}
 
   	//Vector& operator=(Vector&& v) noexcept {																	// move assignment
-   // std::cout << "move assignment\n";
+   	// std::cout << "move assignment\n";
     //_size = std::move(v._size);
     //elem = std::move(v.elem);
     //return *this; */
