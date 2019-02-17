@@ -33,25 +33,21 @@ class BinTree {
 
 	public:
 
-		BinTree() = default;																												// constructor
+		BinTree() = default;																												// default constructor
 
-		/*BinTree(const BinTree& bst);																								// copy constructor
+		BinTree(const BinTree& bst);																								// copy constructor (implemented outside)																				
 
-    //BinTree& operator=(const BinTree& bt);	*/																// copy assignment
+    BinTree& operator=(const BinTree& bst);																			// copy assignment (implemented outside)
   
   	BinTree(BinTree&& bst) noexcept : root{std::move(bst.root)} {								// move constructor
 		std::cout <<"calling move ctor" <<std::endl;
-		}				
-			
-    // : _size{std::move(v._size)}, elem{std::move(v.elem)} {
-    //std::cout << "move ctor\n";
-  //}BinarySearchTree(BinarySearchTree&& bst) noexcept : root{std::move(bst.root)} {}
+		}	
 
-  	//Vector& operator=(Vector&& v) noexcept {																	// move assignment
-   	// std::cout << "move assignment\n";
-    //_size = std::move(v._size);
-    //elem = std::move(v.elem);
-    //return *this; */
+  	BinTree& operator=(BinTree&& bst) noexcept {																// move assignment
+		std::cout << "calling move assignment" <<std::endl;    
+		root = std::move(bst.root);
+		return *this;
+		}
 
 		void insert (std::pair<const T,V>& pair);																		// inserisce il primo nodo; NON const method
 
@@ -77,7 +73,9 @@ class BinTree {
 
 		void balance ();
 
-		void balance (std::vector<std::pair<const T, V>>& aux, int left, int right);										
+		void balance (std::vector<std::pair<const T, V>>& aux, int left, int right);
+
+		void deepcopy (Node* before, std::unique_ptr<Node> after);								// to implement copy ctor									
 
 		template <typename ot, typename ov>
 		friend std::ostream& operator<<(std::ostream&, const BinTree<ot,ov>&);		//friendship
@@ -289,24 +287,36 @@ void BinTree<T,V>::balance(std::vector<std::pair<const T, V>>& aux, int left, in
 
 //-------------------------------------------------------------------------- COPY CTOR -----------------------------------------------------------------------------------
 
-//template <typename T, typename V>
-//BinTree<T,V>::BinTree(const BinTree& bst) {
-//  std::cout << "copy ctor\n";
-//  std::copy(bst.begin(), bst.end(), begin());
-//}
+template <typename T, typename V>
+BinTree<T,V>::BinTree(const BinTree& bst) {
+std::cout << "calling copy ctor" <<std::endl;																		// check
+if (bst.root!=nullptr){																													// the tree to be copied is not empty
+	std::unique_ptr<Node> after;
+	deepcopy (bst.root.get(), after);
+	}
+}
 
+
+template <typename T, typename V>
+void BinTree<T,V>::deepcopy (Node* before, std::unique_ptr<Node> after){						// auxiliary function deepcopy to implement a copy ctor
+after.reset(new Node{before->pair, before->left, before->right, before->upper});
+if (before->left != nullptr)																												// left-hand recursion
+	deepcopy(before->left.get(), after->left);																				
+if (before.right != nullptr)																												// right-hand recursion		
+	deepcopy(before->left.get(), after->left);
+}
 
 //-------------------------------------------------------------------------- COPY ASSIGNMENT ------------------------------------------------------------------------------
-/*
+
 template <typename T, typename V>																								// difference with copy ctor: the tree already exists
-BinTree<T,V>& BinTree<T,V>::operator=(const BinTree& bt){												// l'oggetto bt è l'albero che voglio copiare, doing an hand reset (design choice)
-	std::cout <<"copy assignment" <<std::endl;																		// check
+BinTree<T,V>& BinTree<T,V>::operator=(const BinTree& bst){											// l'oggetto bst è l'albero che voglio copiare, doing an hand reset (design choice)
+	std::cout <<"calling copy assignment" <<std::endl;														// check
 	root.reset();																																	// first of all clean my memory
-	auto tmp = bt;																																// then use copy ctor
+	auto tmp = bst;																																// then use copy ctor
 	(*this) = std::move(tmp);																											// finally move assignment
 	return *this;																																	// dereferenzio per aver una referenza all'albero
 }
-*/
+
 //----------------------------------------------------------------------------MAIN-----------------------------------------------------------------------------------------
 
 
@@ -345,23 +355,32 @@ int main (){
 	bst.find(16);
 	bst.find(9);
 
-	bst.clear();
+	//bst.clear();
 																																						
-	bst.balance();
+	//bst.balance();
 
-	//BinTree<int,int> moved{std::move(bst)};
+	BinTree<int,int> moved{std::move(bst)};
 		
-	//	for (const auto& x : moved) {																															// se stampo bst dà segmentation fault
-	//	std::cout << "(" << x.first << ":" << x.second << ") ";
-	//}
-	//std::cout << "moved" << std::endl;
+	for (const auto& x : moved) {																															// se stampo bst dà segmentation fault, perché è stato spostato
+		std::cout << "(" << x.first << ":" << x.second << ") ";
+	}
+	std::cout << "moved" << std::endl;
 
-	//BinTree<int,int> cctor{bst};			
+	BinTree<int,int> copied{bst};			
 
-	//for (const auto& x : cctor) {																															// se stampo bst dà segmentation fault
+	for (const auto& x : copied) {																													
 		//std::cout << "(" << x.first << ":" << x.second << ") ";
 	//}
-	//std::cout << "cctor" << std::endl;						
+	//std::cout << "copied" << std::endl;						
+
+	BinTree<int,int> b3;
+	
+	//b3 = bst;
+
+	//for (const auto& x : b3) {																														
+	//	std::cout << "(" << x.first << ":" << x.second << ") ";	
+	//}
+	//std::cout << "b3" << std::endl;						
 
 	return 0;
 }
