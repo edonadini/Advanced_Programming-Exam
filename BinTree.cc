@@ -43,7 +43,7 @@ class BinTree {
 		std::cout <<"move ctor" <<std::endl;
 		}				
 			
-     // : _size{std::move(v._size)}, elem{std::move(v.elem)} {
+    // : _size{std::move(v._size)}, elem{std::move(v.elem)} {
     //std::cout << "move ctor\n";
   //}BinarySearchTree(BinarySearchTree&& bst) noexcept : root{std::move(bst.root)} {}
 
