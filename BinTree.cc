@@ -37,10 +37,10 @@ class BinTree {
 
 		/*BinTree(const BinTree& bst);																								// copy constructor
 
-    //BinTree& operator=(const BinTree& bt);																		// copy assignment
+    //BinTree& operator=(const BinTree& bt);	*/																// copy assignment
   
   	BinTree(BinTree&& bst) noexcept : root{std::move(bst.root)} {								// move constructor
-		std::cout <<"move ctor" <<std::endl;
+		std::cout <<"calling move ctor" <<std::endl;
 		}				
 			
     // : _size{std::move(v._size)}, elem{std::move(v.elem)} {
