@@ -242,7 +242,7 @@ typename BinTree<T,V>::Iterator BinTree<T,V>::begin() {													// typename 
 
 template <typename T, typename V>
 typename BinTree<T,V>::ConstIterator BinTree<T,V>::cbegin() {													// fully qualified name
-	if (root=nullptr)
+	if (root==nullptr)
 		return ConstIterator {nullptr};																										// necessario caso empty tree? no?
 	auto tmp = root.get();
   while (tmp->left != nullptr){
