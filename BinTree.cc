@@ -304,7 +304,7 @@ after.reset(new Node{before->pair, before->left, before->right, before->upper});
 if (before->left != nullptr)																												// left-hand recursion
 	deepcopy(before->left.get(), after->left);																				
 if (before.right != nullptr)																												// right-hand recursion		
-	deepcopy(before->left.get(), after->left);
+	deepcopy(before->right.get(), after->right);
 }
 
 //-------------------------------------------------------------------------- COPY ASSIGNMENT ------------------------------------------------------------------------------
