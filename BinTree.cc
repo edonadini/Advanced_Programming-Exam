@@ -60,17 +60,17 @@ class BinTree {
 
 		class ConstIterator;
 
-		Iterator begin() const noexcept;																					// return an iterator to the first node (with smallest key; in general, !=root), impl. outside
-
-		Iterator end() const noexcept { return Iterator{nullptr}; };							// return a proper iterator
-
-		ConstIterator cbegin() const noexcept;																		// return a const iterator to the first node; implemented outside the class
-
-		ConstIterator cend() const noexcept { return ConstIterator{nullptr}; };		// return a proper const iterator
+		Iterator begin();																													// return an iterator to the first node (with smallest key; in general, !=root), impl. outside
 		
-		Iterator find (const T& key) const noexcept;															// find a given key and return an iterator to that node. If the key is not found returns end()
+		Iterator end() { return Iterator{nullptr}; };															// return a proper iterator
+
+		ConstIterator cbegin();																										// return a const iterator to the first node; implemented outside the class
+
+		ConstIterator cend() { return ConstIterator{nullptr}; };									// return a proper const iterator
 		
-		Iterator recfind (Node* subroot, const T& key) const noexcept ;						// private?
+		Iterator find (const T& key);																							// find a given key and return an iterator to that node. If the key is not found returns end()
+		
+		Iterator recfind (Node* subroot, const T& key);														// private?
 
 		void balance ();
 
@@ -120,8 +120,8 @@ class BinTree<T,V>::Iterator : public std::iterator<std::forward_iterator_tag, s
     return it;
   }
 
-	bool operator==(const Iterator& other) const { return current == other.current; }		// comparison operator; if the two iterators point to the same node
-	bool operator!=(const Iterator& other) const { return !(*this == other); }
+	bool operator==(const Iterator& other) { return current == other.current; }		// comparison operator; if the two iterators point to the same node
+	bool operator!=(const Iterator& other) { return !(*this == other); }
 
 };																																										// end class Iterators
 
@@ -190,14 +190,14 @@ void BinTree<T,V>::clear() noexcept {
 //-------------------------------------------------------------------------- FIND -----------------------------------------------------------------------------------------
 
 template <typename T, typename V>
-typename BinTree<T,V>::Iterator BinTree<T,V>::find(const T& key) const noexcept {											
+typename BinTree<T,V>::Iterator BinTree<T,V>::find(const T& key) {											
 	if (root == nullptr)
 		return end();
 	return recfind(root.get(), key);																										// no else?																		
 } 
 
 template <typename T, typename V>
-typename BinTree<T,V>::Iterator BinTree<T,V>::recfind(Node* subroot, const T& key) const noexcept {											
+typename BinTree<T,V>::Iterator BinTree<T,V>::recfind(Node* subroot, const T& key) {											
     																																									
 	if (key == subroot->pair.first) {																										// Base case: key is present at subroot 																 
 		std::cout <<"key found" <<std::endl;		
@@ -229,7 +229,7 @@ std::ostream& operator<<(std::ostream& os, const BinTree<T,V>& bst) {						// ov
 //--------------------------------------------------------------------------BEGIN-----------------------------------------------------------------------------------------
 
 template <typename T, typename V>
-typename BinTree<T,V>::Iterator BinTree<T,V>::begin() const noexcept {					// typename and fully qualified name, returns an iterator to the first node (leftmost)
+typename BinTree<T,V>::Iterator BinTree<T,V>::begin() {													// typename and fully qualified name, returns an iterator to the first node (leftmost)
 	auto tmp = root.get();
   while (tmp->left != nullptr){
     tmp = tmp->left.get();
@@ -241,7 +241,7 @@ typename BinTree<T,V>::Iterator BinTree<T,V>::begin() const noexcept {					// ty
 //--------------------------------------------------------------------------CBEGIN-----------------------------------------------------------------------------------------
 
 template <typename T, typename V>
-typename BinTree<T,V>::ConstIterator BinTree<T,V>::cbegin() const noexcept {					// fully qualified name
+typename BinTree<T,V>::ConstIterator BinTree<T,V>::cbegin() {													// fully qualified name
 	if (root=nullptr)
 		return ConstIterator {nullptr};																										// necessario caso empty tree? no?
 	auto tmp = root.get();
