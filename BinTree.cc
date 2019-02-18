@@ -303,7 +303,7 @@ void BinTree<T,V>::deepcopy (Node* before, std::unique_ptr<Node> after){						//
 after.reset(new Node{before->pair, before->left, before->right, before->upper});
 if (before->left != nullptr)																												// left-hand recursion
 	deepcopy(before->left.get(), after->left);																				
-if (before.right != nullptr)																												// right-hand recursion		
+if (before->right != nullptr)																												// right-hand recursion		
 	deepcopy(before->right.get(), after->right);
 }
 
