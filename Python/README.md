@@ -1,4 +1,4 @@
-Python project
+# Python project
 
 As for Pyhton module, we are asked to write a class PostcardList.
 
@@ -17,3 +17,5 @@ As for the implementation, the class PostcardList must have at least the followi
 The readFile method is used to read line by line – for the first time – the content of a file and to save it in the list self._postcards; for the subsequent readings, we should use the updateList method, which appends the new lines read from a file to the existing ones already stored in the list. Everytime we read or update, we should also call parsePostcards, which parses the list and sets accordingly the three dictionaries _date, _from and _to.
 In particular, the dictionaries are useful to retrieve information about all the postacards respectively sent by a given sender (by means of the function getPostcardsBySender), received by a given receiver (getPostcardsByReceiver), sent within a given date range (getPostcardsByDateRange).
 In addition, we can use writeFile to write the content of _postcards into a proper file (in our case, “output.txt”), while with updateFile we can append to the aforementioned file the content of _postcards.
+
+
