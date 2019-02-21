@@ -29,7 +29,15 @@ class BinTree {
   };
 
   std::unique_ptr<Node> root;
+ 
+  void insert_more(const std::pair<const T, V>& pair, Node* comp);
 
+  void balance(std::vector<std::pair<const T, V>>& aux, int left, int right);
+
+  void deepcopy(Node*before, std::unique_ptr<Node>& after);
+
+  
+  
 public:
   
   BinTree() = default;
@@ -50,8 +58,6 @@ public:
 
   void insert(const std::pair<const T, V>& pair);
 
-  void insert_more(const std::pair<const T, V>& pair, Node* comp);
-
   void clear() noexcept;
 
   class Iterator;
@@ -70,17 +76,13 @@ public:
 
   ConstIterator cend() const { return ConstIterator{nullptr}; };
 
-  Iterator find(const T& key);
+  Iterator find(const T& key) noexcept;
 
-  ConstIterator find(const T& key) const;
-
-  Iterator recfind(Node* subroot, const T& key);
-
+  ConstIterator find(const T& key) const noexcept;
+  
+  Iterator recfind(Node* subroot, const T& key) noexcept;
+    
   void balance();
-
-  void balance(std::vector<std::pair<const T, V>>& aux, int left, int right);
-
-  void deepcopy(Node*before, std::unique_ptr<Node>& after);
 
   template <typename ot, typename ov>
   friend std::ostream& operator<<(std::ostream&, const BinTree<ot, ov>&);
@@ -196,14 +198,21 @@ template <typename T, typename V> void BinTree<T, V>::clear() noexcept {
 //-----------------------------------------------------------------------------------------
 
 template <typename T, typename V>
-typename BinTree<T, V>::Iterator BinTree<T, V>::find(const T& key) {
+typename BinTree<T, V>::Iterator BinTree<T, V>::find(const T& key) noexcept{
   if (root == nullptr)
     return end();
   return recfind(root.get(), key);
 }
 
 template <typename T, typename V>
-typename BinTree<T, V>::Iterator BinTree<T, V>::recfind(Node* subroot, const T& key) {
+typename BinTree<T, V>::ConstIterator BinTree<T, V>::find(const T& key) const noexcept{
+  if (root == nullptr)
+    return end();
+  return recfind(root.get(), key);
+}
+
+template <typename T, typename V>
+typename BinTree<T, V>::Iterator BinTree<T, V>::recfind(Node* subroot, const T& key) noexcept {
 
   if (key == subroot->pair.first) {
     std::cout << "key found" << std::endl;
@@ -292,11 +301,9 @@ void BinTree<T, V>::balance(std::vector<std::pair<const T, V>>& aux, int left, i
 
   if (left > right)
     return;
-  median =
-      floor((left + right) / 2);
+  median = ((left + right) / 2);
   insert(aux[median]);
-  std::cout << "in func balance\t" << aux[median].first
-            << std::endl;
+  std::cout << "in func balance\t" << aux[median].first << std::endl;
   balance(aux, left, median - 1);
   balance(aux, median + 1, right);
 }
