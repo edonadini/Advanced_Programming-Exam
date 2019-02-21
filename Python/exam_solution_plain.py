@@ -43,7 +43,6 @@ class PostcardList():
                 date_key = pcard[0].split(":")[1]
                 from_key = pcard[1].split(":")[1]
                 to_key = pcard[2].split(":")[1]
-                date_key= datetime.datetime.strptime(date_key,"%Y-%m-%d").date()
 
                 if date_key not in self._date:
                     self._date[date_key] = [i]      
