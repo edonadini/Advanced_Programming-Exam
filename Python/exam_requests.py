@@ -31,17 +31,9 @@ Class PostcardList must manage the sorting of dates/senders/receivers. Note that
 import unittest
 import datetime  # use this module to deal with dates:  https://docs.python.org/3/library/datetime.html
 
-class PostcardList: 
-    ########################
-    # define attributes here
-    pass
-    ########################
 
+from exam_solution import PostcardList
 
-########################
-# TO COMMENT 
-from exam_solution import PostcardList # overrides the class define above
-########################
 
 
 class Test(unittest.TestCase):
