@@ -44,7 +44,7 @@ class PostcardList():
                 f.write(elem)
 
                 
-    def updateFile(outputfile):
+    def updateFile(self, outputfile):
         with open (outputfile, 'a') as f:
             for elem in self._postcards:
                 f.write (elem)
