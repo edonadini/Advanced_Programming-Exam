@@ -21,7 +21,7 @@ class BinTree {
       left{l},
       right{r},
       upper{u} {
-      //std::cout << "Node ctor" << std::endl;
+      //std::cout << "Calling node ctor" << std::endl;
     }
 
     ~Node() noexcept = default;
@@ -49,11 +49,11 @@ public:
   BinTree& operator=(const BinTree& bst);
 
   BinTree(BinTree&& bst) noexcept : root{std::move(bst.root)} {
-    //std::cout << "calling move ctor" << std::endl;
+    std::cout << "Calling move ctor" << std::endl;
   }
 
   BinTree& operator=(BinTree&& bst) noexcept {
-    //std::cout << "calling move assignment" << std::endl;
+    std::cout << "Calling move assignment" << std::endl;
     root = std::move(bst.root);
     return *this;
   }
@@ -196,7 +196,7 @@ void BinTree<T, V>::insert_more(const std::pair<const T, V>& p, Node* comp) {
 
 template <typename T, typename V> void BinTree<T, V>::clear() noexcept {
   root.reset();
-  //std::cout << "inside clear" << std::endl;
+  std::cout << "Inside func clear" << std::endl;
 }
 
 //----------------------------------------------------------------------------------------
@@ -221,7 +221,7 @@ template <typename T, typename V>
 typename BinTree<T, V>::Node* BinTree<T, V>::recfind(Node* subroot, const T& key) noexcept {
 
   if (key == subroot->pair.first) {
-    //std::cout << "key found" << std::endl;
+    std::cout << "From func find: key " << key << " found" << std::endl;
     return subroot;
   }
 
@@ -229,7 +229,7 @@ typename BinTree<T, V>::Node* BinTree<T, V>::recfind(Node* subroot, const T& key
     if (subroot->right != nullptr)
       return recfind(subroot->right.get(), key);
     else {
-      //std::cout << "key not found R" << std::endl;
+      std::cout << "From func find: key " << key << " not found" << std::endl;
       return nullptr;
     }
   }
@@ -237,7 +237,7 @@ typename BinTree<T, V>::Node* BinTree<T, V>::recfind(Node* subroot, const T& key
   if (subroot->left != nullptr)
     return recfind(subroot->left.get(), key);
   else {
-    //std::cout << "key not found L" << std::endl;
+    std::cout << "From func find: key " << key << " not found" << std::endl;
     return nullptr;
   }
 }
@@ -289,11 +289,14 @@ typename BinTree<T, V>::ConstIterator BinTree<T, V>::cbegin() const {
 template <typename T, typename V>
 V& BinTree<T, V>::operator[](const T& key) noexcept{
   Iterator get_iter {find(key)};
-  if (get_iter != nullptr)
+  if (get_iter != nullptr){
+    std::cout << "Value corresponding to key " << key <<" is: " << (*get_iter).second << std::endl;
     return (*get_iter).second;
-  //std::cout <<"Key not found: allocating a new node with key " << key <<" and value {}" << std::endl;
+  }
+  std::cout << "Key not found: allocating a new node with key " << key <<" and value {}" << std::endl;
   insert ({key, V{}});
   get_iter = find(key);
+  std::cout << "Value corresponding to key " << key <<" is: " << (*get_iter).second << std::endl;
   return (*get_iter).second;
 }
 
@@ -317,7 +320,7 @@ template <typename T, typename V>
 void BinTree<T, V>::balance() {
 
   if (!root) {
-    //std::cout << "You're trying to balance an empty tree" << std::endl;
+    std::cout << "You're trying to balance an empty tree" << std::endl;
     return;
   }
   std::vector<std::pair<const T, V>> aux;
@@ -335,7 +338,7 @@ void BinTree<T, V>::balance(std::vector<std::pair<const T, V>>& aux, std::size_t
     return;
   auto median = ((left + right) / 2);
   insert(aux[median]);
-  //std::cout << "in func balance\t" << aux[median].first << std::endl;
+  std::cout << "From func balance:\t" << aux[median].first << std::endl;
   balance(aux, left, median);
   balance(aux, median + 1, right);
 }
@@ -345,7 +348,7 @@ void BinTree<T, V>::balance(std::vector<std::pair<const T, V>>& aux, std::size_t
 //-----------------------------------------------------------------------------------
 
 template <typename T, typename V> BinTree<T, V>::BinTree(const BinTree& bst) {
-  //std::cout << "calling copy ctor" << std::endl;
+  std::cout << "Calling copy ctor" << std::endl;
   if (bst.root != nullptr) {
     root.reset(new Node{bst.root->pair, nullptr, nullptr, nullptr});
     deepcopy(bst.root.get(), root);
@@ -370,7 +373,7 @@ void BinTree<T, V>::deepcopy(Node* before, std::unique_ptr<Node>& after) {
 
 template <typename T, typename V>
 BinTree<T, V> &BinTree<T, V>::operator=(const BinTree& bst) {
-  //std::cout << "calling copy assignment" << std::endl;
+  std::cout << "Calling copy assignment" << std::endl;
   root.reset();
   auto tmp = bst;
   (*this) = std::move(tmp);
@@ -390,4 +393,3 @@ int BinTree<T, V>::size(Node* subroot) const noexcept {
     return size(subroot->left.get()) + 1 + size(subroot->right.get()); 
   } 
 } 
-
