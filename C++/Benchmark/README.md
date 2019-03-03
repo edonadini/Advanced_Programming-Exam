@@ -1,4 +1,4 @@
-# Testing permformances
+# Testing performances
 
 The file Benchmark.cc has to be compiled with optimization level -O3.
 
