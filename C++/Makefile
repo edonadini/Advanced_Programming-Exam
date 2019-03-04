@@ -1,5 +1,5 @@
 CXX=c++
-CXXFLAGS = -I -g -std=c++14 -Wall -Wextra
+CXXFLAGS = -g -std=c++14 -Wall -Wextra
 
 default: Test.x
 
