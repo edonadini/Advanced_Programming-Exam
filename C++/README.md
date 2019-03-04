@@ -8,7 +8,7 @@ The **Benchmark** folder contains the file **Benchmark.cc** use to test the look
 
 The **Report.pdf** file presents a brief description of the implementation details of the **template** binary search tree and the benchmark results.
 
-The **Test.cc** file is use to check the implementation of the BinTree class and his functions.
+The **Test.cc** file is used to check the implementation of the BinTree class and his functions.
 
 The **Make file** contains the directive to compile the the **Test.cc** file.
 
